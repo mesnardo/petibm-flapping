@@ -1,0 +1,5 @@
+bin
+build
+.ipynb_checkpoints
+.nbgrader.log
+__pycache__
