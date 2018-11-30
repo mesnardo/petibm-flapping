@@ -124,9 +124,8 @@ class Flapping(object):
         # Normalize the forces by the maximum quasi-steady force on the wing.
         D, L = [], []
         with open(bodypath, 'r') as infile:
-            # x0 = numpy.loadtxt(infile, skiprows=1, usecols=0, unpack=True)
-            # y0 = numpy.zeros_like(x0)
-            x0, y0 = numpy.loadtxt(infile, skiprows=1, unpack=True)
+            x0 = numpy.loadtxt(infile, skiprows=1, usecols=0, unpack=True)
+            y0 = numpy.zeros_like(x0)
         for ti in t:
             alpha = self.orientation_angle(ti)
             x, y = rotate(x0, y0, center=(0.0, 0.0), angle=alpha)
@@ -134,8 +133,8 @@ class Flapping(object):
             D.append(numpy.max(Di))
             L.append(numpy.max(Li))
         D, L = numpy.array(D), numpy.array(L)
-        data['CD'] = [t_nodim, fx / D]
-        data['CL'] = [t_nodim, fy / L]
+        data['CD'] = [t_nodim, fx / numpy.max(D)]
+        data['CL'] = [t_nodim, fy / numpy.max(L)]
         return data
 
 
