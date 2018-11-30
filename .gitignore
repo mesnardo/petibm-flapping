@@ -1,5 +1,14 @@
 bin
 build
+
 .ipynb_checkpoints
 .nbgrader.log
 __pycache__
+
+.logamgx
+forces-0.txt
+grid.h5
+iterations-0.txt
+logs
+solution
+view.log
