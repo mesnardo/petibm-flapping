@@ -67,6 +67,13 @@ class Flapping(object):
         yd = 0.0
         return xd, yd
 
+    def position(self, t, x0, y0):
+        xd, yd = self.displacement(t)
+        alpha = self.orientation_angle(t)
+        x, y = x0 + xd, y0 + yd
+        x, y = rotate(x, y, center=(xd, yd), angle=alpha)
+        return x, y
+
     def translational_velocity(self, t):
         w = 2 * numpy.pi * self.f
         ux = -self.Umax * numpy.sin(w * t)
@@ -88,8 +95,11 @@ class Flapping(object):
     def quasi_steady_coefficients(self, t):
         alpha = self.orientation_angle(t)
         U0, _ = self.translational_velocity(t)
-        if U0 <= 0:
-            alpha = numpy.pi - alpha
+        if isinstance(t, float):
+            alpha = numpy.pi - alpha if U0 <= 0.0 else alpha
+        else:
+            mask = numpy.where(U0 <= 0.0)
+            alpha[mask] = numpy.pi - alpha[mask]
         CD = 1.4 - numpy.cos(2 * alpha)
         CL = 1.2 * numpy.sin(2 * alpha)
         return CD, CL
@@ -114,9 +124,9 @@ class Flapping(object):
         # Normalize the forces by the maximum quasi-steady force on the wing.
         D, L = [], []
         with open(bodypath, 'r') as infile:
-            x0 = numpy.loadtxt(infile, skiprows=1, usecols=0, unpack=True)
-            y0 = numpy.zeros_like(x0)
-            # x0, y0 = numpy.loadtxt(infile, skiprows=1, unpack=True)
+            # x0 = numpy.loadtxt(infile, skiprows=1, usecols=0, unpack=True)
+            # y0 = numpy.zeros_like(x0)
+            x0, y0 = numpy.loadtxt(infile, skiprows=1, unpack=True)
         for ti in t:
             alpha = self.orientation_angle(ti)
             x, y = rotate(x0, y0, center=(0.0, 0.0), angle=alpha)
