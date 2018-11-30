@@ -90,10 +90,12 @@ PetscErrorCode FlappingSolver::setVelocityBodies(const PetscReal &ti)
     PetscReal Xc,  // x-position of the center
               Yc;  // y-position of the center
     PetscReal Umax,  // maximum translational velocity in x-direction
-              Ux;    // translation velocity in x-direction
+              Ux,    // translation velocity in x-direction
+              Uy;    // translation velocity in y-direction
     PetscReal Omega;  // angular velocity
     PetscReal **UB_arr;
     petibm::type::SingleBody &body = bodies->bodies[0];
+    petibm::type::RealVec2D &coords = body->coords;
 
     PetscFunctionBeginUser;
 
@@ -103,14 +105,15 @@ PetscErrorCode FlappingSolver::setVelocityBodies(const PetscReal &ti)
     // compute the translational velocity at current time
     Umax = PETSC_PI * f * A0;
     Ux = - Umax * PetscSinReal(2 * PETSC_PI * f * ti);
+    Uy = 0.0;
     // compute the angular velocity at current time
     Omega = 2 * PETSC_PI * f * beta * PetscCosReal(2 * PETSC_PI * f * ti + phi);
     // update the boundary velocity array
     ierr = DMDAVecGetArrayDOF(body->da, UB, &UB_arr); CHKERRQ(ierr);
     for (PetscInt k = body->bgPt; k < body->edPt; k++)
     {
-        UB_arr[k][0] = Ux + Omega * Yc;
-        UB_arr[k][1] = - Omega * Xc;
+        UB_arr[k][0] = Ux - Omega * (coords[k][1] - Yc);
+        UB_arr[k][1] = Uy + Omega * (coords[k][0] - Xc);
     }
     ierr = DMDAVecRestoreArrayDOF(body->da, UB, &UB_arr); CHKERRQ(ierr);
 
