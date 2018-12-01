@@ -1,4 +1,4 @@
-PETIBM_DIR = $(HOME)/software/petibm/git/mesnardo-read/linux-gnu-openmpi-opt
+PETIBM_DIR = $(HOME)/software/petibm/0.4/linux-gnu-openmpi-opt
 
 PETSC_DIR = $(HOME)/software/petsc/3.10.1
 PETSC_ARCH = linux-gnu-openmpi-opt
