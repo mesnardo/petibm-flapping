@@ -1,34 +1,24 @@
-PETIBM_DIR = $(HOME)/software/petibm/0.4/linux-gnu-openmpi-opt
-
-PETSC_DIR = $(HOME)/software/petsc/3.10.1
+PETSC_DIR = /opt/petsc/3.10.2
 PETSC_ARCH = linux-gnu-openmpi-opt
-MPI_DIR = $(HOME)/software/openmpi/1.8.8/linux-gnu-opt
-YAMLCPP_DIR = $(HOME)/software/yaml-cpp/0.6.2/linux-gnu-opt
 
-LDFLAGS = -L$(PETIBM_DIR)/lib \
-          -Wl,-rpath,$(PETIBM_DIR)/lib \
-          -L$(PETSC_DIR)/$(PETSC_ARCH)/lib \
-          -Wl,-rpath,$(PETSC_DIR)/$(PETSC_ARCH)/lib \
-          -L$(YAMLCPP_DIR)/lib \
-          -Wl,-rpath,$(YAMLCPP_DIR)/lib \
+LDFLAGS = -L$(PETSC_DIR)/$(PETSC_ARCH)/lib \
+          -Wl,-rpath,$(PETSC_DIR)/$(PETSC_ARCH)/lib
 
 LIBS = -lpetibmapps \
        -lpetibm \
        -lpetsc \
        -lyaml-cpp
 
-INCLUDES = -I$(PETSC_DIR)/include \
-           -I$(PETSC_DIR)/$(PETSC_ARCH)/include \
-           -I$(YAMLCPP_DIR)/include \
-           -I$(PETIBM_DIR)/include
+INCLUDES = -I$(PETSC_DIR)/$(PETSC_ARCH)/include \
+           -I$(PETSC_DIR)/include
 
-CXX = $(MPI_DIR)/bin/mpicxx
+CXX = mpicxx
 CXXFLAGS = -w -O3 -Wall -Wno-deprecated --std=c++14
 
 rootdir = $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 srcdir = $(rootdir)/src
 builddir = $(rootdir)/build
-bindir = $(rootdir)/bin
+bindir = /usr/local/bin
 
 srcs = $(shell find $(srcdir) -type f -name *.cpp)
 objs = $(patsubst $(srcdir)/%, $(builddir)/%, $(srcs:.cpp=.o))
