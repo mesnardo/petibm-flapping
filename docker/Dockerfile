@@ -16,5 +16,10 @@ RUN cd /opt && \
     cd petibm-flapping && \
     make all
 
+RUN useradd -ms /bin/bash petibm-user
+USER petibm-user
+WORKDIR /home/petibm-user
+RUN mkdir /home/petibm-user/data
+
 EXPOSE 23
 CMD ["/usr/sbin/sshd", "-D", "-p", "23"]

@@ -1,13 +1,13 @@
 # 2D flow around a flapping wing (Re = 100)
 
-To run the simulation from the current directory:
+Run the simulation from the current directory:
 
 ```bash
-export CUDA_VISIBLE_DEVICES=<idx>
-mpiexec -np 2 ../../bin/petibm-flapping -options_left -log_view ascii:view.log
+cwd=$(pwd)
+nvidia-docker run -it --name=flapping --hostname=grumpy -v $cwd:/home/petibm-user/data petibm-flapping:latest /home/petibm-user/data/run.sh
 ```
 
-The simulation takes less than 5 minutes to complete when using:
+The simulation completes 3200 time steps in less than 5 minutes when using:
 
 - 2 CPU processes (Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz),
 - 1 NVIDIA K40 GPU device.
