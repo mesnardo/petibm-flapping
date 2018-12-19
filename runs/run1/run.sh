@@ -5,5 +5,7 @@ export CUDA_VISIBLE_DEVICES=0
 mpiexec -np 2 petibm-flapping \
 	-options_left \
 	-log_view ascii:view.log
+petibm-vorticity
+petibm-createxdmf
 
 exit 0
