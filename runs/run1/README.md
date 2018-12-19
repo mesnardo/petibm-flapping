@@ -24,6 +24,25 @@ python scripts/plot_force_coefficients.py
 
 **Figure 1:** History of the lift (top) and drag (bottom) coefficients over 4 periods. We compare the forces obtained with PetIBM to the results from Li et al. (2015), Wang et al. (2004), and Eldredge (2007).
 
+To plot the contour of the vorticity field using VisIt:
+
+```
+python scripts/create_p3d_files.py
+visit -nowin -cli scripts/visit_plot_vorticity.py
+```
+
+(The PNG files are saved in the sub-folder `figures` of the simulation directory.)
+
+![figure2](./figures/wz_anim.gif)
+
+**Figure 2:** Contour of the vorticity field (40 levels between -20 and 20).
+
+Animation created using:
+
+```bash
+convert -delay 20 -loop 0 figures/wz*.png figures/wz_anim.gif
+```
+
 ## References
 
 - Eldredge, J. D. (2007). Numerical simulation of the fluid dynamics of 2D rigid body motion with the vortex particle method. Journal of Computational Physics, 221(2), 626-648.
